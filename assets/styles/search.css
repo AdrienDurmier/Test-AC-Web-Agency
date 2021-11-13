@@ -1,0 +1,22 @@
+.autocomplete{
+    position: relative;
+}
+
+#search-resultats {
+    position: absolute;
+    background-color:#fff;
+    color:#18181a;
+    top: 50px;
+    width: 100%;
+}
+
+.autocomplete-result {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+    padding: 15px;
+    cursor: pointer;
+}
+
+.autocomplete-result:not(:first-child) {
+    border-top: 1px solid #18181a;
+}

@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Film{% endblock %}
+
+{% block body %}
+    <h1>Modification du film <i>{{ film.nom }}</i></h1>
+
+    <hr>
+    <a href="{{ path('admin.film.crud') }}" style="color:#fff;">← Revenir à la gestion des films</a>
+
+    <form method="post" action="{{ path('admin.film.delete', {'id': film.id}) }}" onsubmit="return confirm('Êtes-vous sûrs?');" style="float:right;display:inline;">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ film.id) }}">
+        <button type="submit" class="button">X Supprimer ce film</button>
+    </form>
+
+    <hr>
+
+    <form enctype="multipart/form-data" method="post" name="form-film">
+        <div class="form-group">
+            <label for="form-film-nom">Nom</label>
+            <input type="text" id="form-film-nom" name="nom" value="{{ film.nom }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="form-film-genre">Genre</label>
+            <select id="form-film-genre" name="genre" required>
+                {% for genre in genres %}
+                    <option value="{{ genre.id }}" {% if film.genre == genre %}selected="selected"{% endif %}>{{ genre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="form-film-image">Image</label>
+            <input type="file" id="form-film-image" name="image" accept=.jpg,.jpeg,.png" aria-describedby="form-film-image-help" required">
+            <small id="form-film-image-help">
+                Extensions autorisées : .png, .jpeg et .jpg
+            </small>
+        </div>
+
+        <hr>
+
+        <button id="film-form-submit" type="submit" class="btn">
+            &#128190; Enregistrer
+        </button>
+    </form>
+
+{% endblock %}

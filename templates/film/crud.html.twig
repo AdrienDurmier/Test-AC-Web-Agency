@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Film index{% endblock %}
+
+{% block body %}
+    <h1>Gestion des films</h1>
+
+    <div>
+        <a href="{{ path('admin.film.new') }}" class="btn">
+            + Créer la fiche d'un nouveau film
+        </a>
+    </div>
+
+    <br>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Image</th>
+                <th>Nom</th>
+                <th>Genre</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for film in films %}
+            <tr>
+                <td>{{ film.id }}</td>
+                <td><img src="/{{ film.image }}" alt="{{ film.nom }}" style="height:50px;"></td>
+                <td>{{ film.nom }}</td>
+                <td>#{{ film.genre }}</td>
+                <td>
+                    <a href="{{ path('admin.film.edit', {'id': film.id}) }}">Modifier</a>
+                    |
+                    <form method="post" action="{{ path('admin.film.delete', {'id': film.id}) }}" onsubmit="return confirm('Êtes-vous sûrs?');" style="display:inline;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ film.id) }}">
+                        <button type="submit" class="button">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

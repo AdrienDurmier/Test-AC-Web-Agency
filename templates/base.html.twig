@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}{% endblock %} | Allocinoche</title>
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+    </head>
+    <body>
+
+        <header class="topnav">
+            <a class="active" href="{{ path('front.film.index') }}">Films</a>
+            {% if app.user.id is not defined %}
+                <a href="{{ path('app_login') }}">Connexion</a>
+            {% else %}
+                <a href="{{ path('admin.film.crud') }}">Administration</a>
+                <a href="{{ path('app_logout') }}">Déconnexion</a>
+            {% endif %}
+            <form autocomplete="off" action="#">
+                <div class="autocomplete">
+                    <input id="search-input" name="search" type="search" placeholder="Rechercher par nom ou genre...">
+                    <div id="search-resultats" class="hidden"></div>
+                </div>
+            </form>
+        </header>
+
+        <section id="main-container">
+
+            <h1>{% block title_h1 %}{% endblock %}</h1>
+            <section class="container">
+                {% block body %}{% endblock %}
+            </section>
+
+            <footer>
+                Powered by Adrien Durmier pour AC Web Agency
+            </footer>
+        </section>
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </body>
+</html>
