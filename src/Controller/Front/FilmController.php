@@ -2,7 +2,6 @@
 
 namespace App\Controller\Front;
 
-use App\Entity\CommentaireFilm;
 use App\Entity\Film;
 use App\Entity\Genre;
 use App\Repository\FilmRepository;
@@ -24,6 +23,27 @@ class FilmController extends AbstractController
     {
 
         return $this->render('film/index.html.twig');
+    }
+
+    /**
+     * @Route("/films", name="film.list", methods={"GET"})
+     */
+    public function list(Request $request)
+    {
+        $dataGet = $request->query->all();
+
+        $films = $this->getDoctrine()->getRepository(Film::class)->search($dataGet);
+
+        $body = array();
+        foreach($films as $film){
+            $body[] = $film->normalize();
+        }
+
+        $response = new Response(json_encode($body));
+        $response->setStatusCode(Response::HTTP_OK);
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
     }
 
     /**

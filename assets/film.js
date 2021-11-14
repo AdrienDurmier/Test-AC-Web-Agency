@@ -12,7 +12,7 @@ renderFilms(offset, '');
  * @returns {Promise<any>}
  */
 export async function getFilms(offset, recherche) {
-    let url = '/api/films?limit='+limit;
+    let url = '/films?limit='+limit;
     if(offset > 1){
         url += '&offset='+offset;
     }

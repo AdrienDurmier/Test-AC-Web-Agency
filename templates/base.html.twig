@@ -15,7 +15,9 @@
             {% if app.user.id is not defined %}
                 <a href="{{ path('app_login') }}">Connexion</a>
             {% else %}
-                <a href="{{ path('admin.film.crud') }}">Administration</a>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('admin.film.crud') }}">Administration</a>
+                {% endif %}
                 <a href="{{ path('app_logout') }}">Déconnexion</a>
             {% endif %}
             <form autocomplete="off" action="#">
