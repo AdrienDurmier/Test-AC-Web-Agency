@@ -10,7 +10,7 @@
 
     <form method="post" action="{{ path('admin.film.delete', {'id': film.id}) }}" onsubmit="return confirm('Êtes-vous sûrs?');" style="float:right;display:inline;">
         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ film.id) }}">
-        <button type="submit" class="button">X Supprimer ce film</button>
+        <button type="submit" class="button"><i class="fas fa-trash"></i> Supprimer ce film</button>
     </form>
 
     <hr>
@@ -32,16 +32,21 @@
 
         <div class="form-group">
             <label for="form-film-image">Image</label>
-            <input type="file" id="form-film-image" name="image" accept=.jpg,.jpeg,.png" aria-describedby="form-film-image-help" required">
+            <div style="display:flex;">
+                {% if film.image is not null %}
+                    <img src="/{{ film.image }}" alt="{{ film.nom }}" style="height:50px;margin:8px;">
+                {% endif %}
+                <input type="file" id="form-film-image" name="image" accept=.jpg,.jpeg,.png" aria-describedby="form-film-image-help" required">
+            </div>
             <small id="form-film-image-help">
-                Extensions autorisées : .png, .jpeg et .jpg
+                <i class="fas fa-info-circle"></i> Extensions autorisées : .png, .jpeg et .jpg
             </small>
         </div>
 
         <hr>
 
         <button id="film-form-submit" type="submit" class="btn">
-            &#128190; Enregistrer
+            <i class="fas fa-save"></i> Enregistrer
         </button>
     </form>
 

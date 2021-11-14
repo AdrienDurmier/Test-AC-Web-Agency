@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\FilmRepository")
@@ -31,6 +32,17 @@ class Film
      * @ORM\JoinColumn(nullable=false)
      */
     private $genre;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\CommentaireFilm", mappedBy="film", cascade={"persist"})
+     * @ORM\OrderBy({"dateCreation" = "ASC"})
+     */
+    private $commentaires;
+
+    public function __toString()
+    {
+        return $this->nom;
+    }
 
     public function getId(): ?int
     {
@@ -70,6 +82,31 @@ class Film
     {
         $this->genre = $genre;
 
+        return $this;
+    }
+
+    /**
+     * @return Collection|CommentaireFilm[]
+     */
+    public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(CommentaireFilm $commentaire): self
+    {
+        if (!$this->commentaire->contains($commentaire)) {
+            $this->commentaire[] = $commentaire;
+            $commentaire->setFilm($this);
+        }
+        return $this;
+    }
+
+    public function removeCommentaire(CommentaireFilm $commentaire): self
+    {
+        if ($this->commentaires->contains($commentaire)) {
+            $this->commentaires->removeElement($commentaire);
+        }
         return $this;
     }
 

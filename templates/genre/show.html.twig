@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ genre.nom }}{% endblock %}
+
+{% block body %}
+    <h1>{{ genre.nom }}</h1>
+
+    <hr>
+
+    <h2>Films de ce genre</h2>
+    {% if genre.films|length == 0 %}
+        <p>Aucun film</p>
+    {% endif %}
+    {% for film in genre.films %}
+        <a href="{{ path('front.film.show', {'id': film.id}) }}">
+            <div style="display:inline-block;">
+                <figure>
+                    <img src="/{{ film.image }}" alt="{{ film.nom }}" style="max-height:250px;">
+                    <figcaption class="text-center">{{ film.nom }}</figcaption>
+                </figure>
+            </div>
+        </a>
+    {% endfor %}
+
+    {% if app.user %}
+        <hr>
+        <h2><i class="fas fa-edit"></i> Laisser un commentaire</h2>
+        <form action="{{ path('commentaire.new') }}" method="POST">
+            <input type="hidden" name="genre" value="{{ genre.id }}">
+            <textarea id="form-commentaire-contenu" name="contenu" cols="30" rows="10"></textarea>
+            <button type="submit" class="btn"><i class="fas fa-paper-plane"></i> Envoyer</button>
+        </form>
+    {% endif %}
+
+    <hr>
+
+    <h2><i class="fas fa-comments"></i> Commentaires</h2>
+    {% if genre.commentaires|length == 0 %}
+        <p>Aucun commentaire</p>
+    {% endif %}
+    {% for commentaire in genre.commentaires %}
+        <div class="blockquote">
+            <blockquote>
+                {{ commentaire.contenu|nl2br }}
+            </blockquote>
+            <figcaption>—{{ commentaire.auteur }} le {{ commentaire.dateCreation|date('d/m/Y \à H:i') }}</figcaption>
+        </div>
+    {% endfor %}
+
+{% endblock %}

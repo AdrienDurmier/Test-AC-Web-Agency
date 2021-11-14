@@ -33,6 +33,15 @@ class FilmRepository extends ServiceEntityRepository
             $qb->setParameter(':recherche' ,'%' . $filtres['recherche'] . '%');
         }
 
+        if(isset($filtres['limit'])) {
+            $qb->setMaxResults($filtres['limit']);
+        }
+
+        if(isset($filtres['offset'])) {
+            $qb->setFirstResult($filtres['offset']);
+        }
+
+
         $results = $qb->getQuery()->getResult();
 
         return $results;

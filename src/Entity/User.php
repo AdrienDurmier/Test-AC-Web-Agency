@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -49,6 +50,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="text", nullable=false)
      */
     private $lastname;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\CommentaireUser", mappedBy="user", cascade={"persist"})
+     * @ORM\OrderBy({"dateCreation" = "ASC"})
+     */
+    private $commentaires;
+
+    public function __toString()
+    {
+        return $this->firstname . ' ' . $this->lastname;
+    }
 
     public function getId(): ?int
     {
@@ -188,6 +200,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->lastname = $lastname;
 
+        return $this;
+    }
+
+    /**
+     * @return Collection|CommentaireUser[]
+     */
+    public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(CommentaireUser $commentaire): self
+    {
+        if (!$this->commentaire->contains($commentaire)) {
+            $this->commentaire[] = $commentaire;
+            $commentaire->setUser($this);
+        }
+        return $this;
+    }
+
+    public function removeCommentaire(CommentaireUser $commentaire): self
+    {
+        if ($this->commentaires->contains($commentaire)) {
+            $this->commentaires->removeElement($commentaire);
+        }
         return $this;
     }
 }

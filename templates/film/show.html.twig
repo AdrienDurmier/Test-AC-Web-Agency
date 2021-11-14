@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ film.nom }}{% endblock %}
+
+{% block body %}
+    <h1>{{ film.nom }}</h1>
+
+    <div class="shom-film-area">
+        <div class="shom-film-thumb">
+            <img src="/{{ film.image }}" alt="{{ film.nom }}">
+            <p><a href="{{ path('front.genre.show', {'id': film.genre.id}) }}"><i class="fas fa-tag"></i> {{ film.genre }}</a></p>
+        </div>
+        <div class="shom-film-synopsis">
+            <h2>Synopsis</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In iaculis sit amet nulla a convallis. Maecenas quis euismod magna, sit amet finibus est. Nunc ac nulla et nibh eleifend scelerisque. Nulla et mattis libero. Praesent facilisis iaculis risus, sed efficitur nibh tincidunt in. Pellentesque porta lectus at elementum bibendum. Proin non quam maximus, elementum diam a, feugiat dui. Nunc condimentum iaculis arcu, eget scelerisque magna auctor eget. Sed sed tellus ut nulla elementum elementum. Duis non vestibulum eros. Curabitur massa nulla, suscipit sed tortor sit amet, lobortis vulputate ante. Donec sagittis aliquet erat ultrices luctus.</p>
+            <p>Praesent id nisi est. Donec maximus tortor sed iaculis tristique. Ut congue tincidunt dolor, vitae ultricies leo gravida in. Sed volutpat tristique odio a commodo. Maecenas nec tortor vitae felis euismod varius. Integer justo justo, lacinia et tempus viverra, consectetur vel purus. Sed feugiat convallis enim vel fermentum. </p>
+        </div>
+    </div>
+
+
+    {% if app.user %}
+        <hr>
+        <h2><i class="fas fa-edit"></i> Laisser un commentaire</h2>
+        <form action="{{ path('commentaire.new') }}" method="POST">
+            <input type="hidden" name="film" value="{{ film.id }}">
+            <textarea id="form-commentaire-contenu" name="contenu" cols="30" rows="10"></textarea>
+            <button type="submit" class="btn"><i class="fas fa-paper-plane"></i> Envoyer</button>
+        </form>
+    {% endif %}
+
+    <hr>
+
+    <h2><i class="fas fa-comments"></i> Commentaires</h2>
+    {% if film.commentaires|length == 0 %}
+        <p>Aucun commentaire</p>
+    {% endif %}
+    {% for commentaire in film.commentaires %}
+        <div class="blockquote">
+            <blockquote>
+                {{ commentaire.contenu|nl2br }}
+            </blockquote>
+            <figcaption>—{{ commentaire.auteur }} le {{ commentaire.dateCreation|date('d/m/Y \à H:i') }}</figcaption>
+        </div>
+    {% endfor %}
+
+{% endblock %}

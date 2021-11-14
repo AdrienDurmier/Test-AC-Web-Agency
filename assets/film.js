@@ -1,24 +1,27 @@
 const filmsArea = document.getElementById('films');
-var page = 1;
-var recherche = '';
+var offset = 1;
+var limit = 3;
 
 // Chargement de la première page sans filtre
-renderFilms(page, recherche);
+renderFilms(offset, '');
 
 /**
  * Requête pour récupérer les films en fonction des paramètres
- * @param page
+ * @param offset
  * @param recherche
  * @returns {Promise<any>}
  */
-export async function getFilms(page, recherche) {
-    let url = '/api/films?page='+page;
+export async function getFilms(offset, recherche) {
+    let url = '/api/films?limit='+limit;
+    if(offset > 1){
+        url += '&offset='+offset;
+    }
     if(recherche !== ''){
         url += '&recherche='+recherche;
     }
 
     try {
-        let res = await fetch(url);
+        let res = await fetch(url);        
         return await res.json();
     } catch (error) {
         console.error(error);
@@ -27,15 +30,17 @@ export async function getFilms(page, recherche) {
 
 /**
  * Rendu de la liste des films
- * @param page
+ * @param offset
  * @param recherche
  * @returns {Promise<void>}
  */
-async function renderFilms(page, recherche) {
+async function renderFilms(offset, recherche) {
     if(filmsArea!==null){
         filmsArea.innerHTML = '';
-        let films = await getFilms(page, recherche);
+        let films = await getFilms(offset, recherche);
+        let nbFilms = 0;
         films.forEach(film => {
+            nbFilms++;
             // Création d'un film
             let newFilm = document.createElement('div');
             newFilm.classList.add('flex-item');
@@ -53,6 +58,26 @@ async function renderFilms(page, recherche) {
             });
             filmsArea.appendChild(newFilm);
         });
+
+        // Pagination
+        let btnLoadMoreExistant = document.getElementById('film-next-page');
+        if(btnLoadMoreExistant){
+            btnLoadMoreExistant.remove();
+        }
+        if(nbFilms > 0){
+            let btnLoadMoreArea = document.createElement('div');
+            btnLoadMoreArea.classList.add('text-center');
+            let btnLoadMore = document.createElement('button');
+            btnLoadMore.classList.add('btn');
+            btnLoadMore.id = "film-next-page";
+            btnLoadMore.innerHTML = "Page suivante <i class='fas fa-caret-right'></i>";
+            btnLoadMore.addEventListener('click', () => {
+                offset += limit;
+                renderFilms(offset , recherche);
+            });
+            btnLoadMoreArea.appendChild(btnLoadMore);
+            filmsArea.after(btnLoadMore);
+        }
     }
 }
 
@@ -83,9 +108,10 @@ export function displayModaleFilm(film){
     modalBody.classList.add('modal-body');
     modalBody.classList.add('modale-film-item');
     modalBody.innerHTML = `
-        <img src="${film.image}" alt="${film.nom}">
+        <img src="/${film.image}" alt="${film.nom}">
         <br>
-        <p>#${film.genre.nom}</p>
+        <p><a href="/genre/${film.genre.id}"><i class="fas fa-tag"></i> ${film.genre.nom}</a></p>
+        <p><a href="/film/${film.id}"><i class="fas fa-comments"></i> Voir les commentaires</a></p>
     `;
 
     modalHeader.appendChild(modalClose);
@@ -94,3 +120,5 @@ export function displayModaleFilm(film){
     modal.appendChild(modalContent);
     document.body.appendChild(modal);
 }
+
+

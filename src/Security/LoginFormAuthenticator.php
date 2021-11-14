@@ -50,7 +50,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
         
-        return new RedirectResponse($this->urlGenerator->generate('film_crud'));
+        return new RedirectResponse($this->urlGenerator->generate('admin.film.crud'));
     }
 
     protected function getLoginUrl(Request $request): string

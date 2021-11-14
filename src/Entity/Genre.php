@@ -28,6 +28,12 @@ class Genre
      */
     private $films;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\CommentaireGenre", mappedBy="genre", cascade={"persist"})
+     * @ORM\OrderBy({"dateCreation" = "ASC"})
+     */
+    private $commentaires;
+
     public function __toString()
     {
         return $this->nom;
@@ -82,6 +88,31 @@ class Genre
             }
         }
 
+        return $this;
+    }
+
+    /**
+     * @return Collection|CommentaireGenre[]
+     */
+    public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(CommentaireGenre $commentaire): self
+    {
+        if (!$this->commentaire->contains($commentaire)) {
+            $this->commentaire[] = $commentaire;
+            $commentaire->setGenre($this);
+        }
+        return $this;
+    }
+
+    public function removeCommentaire(CommentaireGenre $commentaire): self
+    {
+        if ($this->commentaires->contains($commentaire)) {
+            $this->commentaires->removeElement($commentaire);
+        }
         return $this;
     }
 

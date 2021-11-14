@@ -18,6 +18,7 @@
 * composer require sensio/framework-extra-bundle
 * composer require symfony/serializer
 * composer require symfony/mime
+* composer require symfony/http-client
 * composer require --dev doctrine/doctrine-fixtures-bundle
 * composer require --dev symfony/maker-bundle
 
@@ -32,7 +33,7 @@
 * Utilisateur
 
 ## Sécurisation
-Création de l'authenticator et configuration de la sécurité (php bin/console make:auth, config/packages/security.yaml, création du UserDataPersister.php)
+ * Création de l'authenticator et configuration de la sécurité (php bin/console make:auth, config/packages/security.yaml, création du UserDataPersister.php)
 
 ## Création de fixtures comme prérequis pour les tests (utilisateurs, films et genres)
 Admin:

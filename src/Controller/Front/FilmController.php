@@ -2,6 +2,7 @@
 
 namespace App\Controller\Front;
 
+use App\Entity\CommentaireFilm;
 use App\Entity\Film;
 use App\Entity\Genre;
 use App\Repository\FilmRepository;
@@ -21,7 +22,18 @@ class FilmController extends AbstractController
      */
     public function index(): Response
     {
+
         return $this->render('film/index.html.twig');
+    }
+
+    /**
+     * @Route("/film/{id}", name="front.film.show", methods={"GET"})
+     */
+    public function show(Film $film): Response
+    {
+        return $this->render('film/show.html.twig', [
+            'film'          => $film,
+        ]);
     }
 
     /**
@@ -37,7 +49,7 @@ class FilmController extends AbstractController
     }
 
     /**
-     * @Route("/film/new", name="admin.film.new", methods={"GET","POST"})
+     * @Route("/admin/film/new", name="admin.film.new", methods={"GET","POST"})
      * @param Request $request
      * @param FilmService $filmService
      * @return Response
@@ -54,13 +66,13 @@ class FilmController extends AbstractController
             return $this->redirectToRoute('admin.film.crud', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('film/new.html.twig', [
+        return $this->render('film/new.html.twig', [
             'genres' => $genres
         ]);
     }
 
     /**
-     * @Route("/film/{id}/edit", name="admin.film.edit", methods={"GET","POST"})
+     * @Route("/admin/film/{id}/edit", name="admin.film.edit", methods={"GET","POST"})
      * @param Request $request
      * @param Film $film
      * @param FilmService $filmService
@@ -78,14 +90,14 @@ class FilmController extends AbstractController
             return $this->redirectToRoute('admin.film.crud', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('film/edit.html.twig', [
+        return $this->render('film/edit.html.twig', [
             'film' => $film,
             'genres' => $genres,
         ]);
     }
 
     /**
-     * @Route("/film/{id}", name="admin.film.delete", methods={"POST"})
+     * @Route("/admin/film/{id}", name="admin.film.delete", methods={"POST"})
      * @param Request $request
      * @param Film $film
      * @return Response

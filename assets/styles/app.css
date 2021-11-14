@@ -16,15 +16,18 @@ body {
     font-family: "Calibri", sans-serif;
 }
 
-a {text-decoration: none;}
+a {text-decoration: none;color:inherit;}
 
 h1 {
     text-align: center;
     margin-top: 70px;
 }
 
+.text-center {
+    text-align: center;
+}
+
 header {
-    position: fixed;
     background-color: var(--dark-color);
     width: 100%;
     top: 0;
@@ -60,6 +63,11 @@ header #search-input {
     min-width: 450px;
 }
 
+@media screen and (min-width: 900px) {
+    header {
+        position: fixed;
+    }
+}
 @media screen and (max-width: 900px) {
     header a, header #search-input {
         float: none;
@@ -168,7 +176,7 @@ footer {
 }
 
 /* Formulaire */
-input[type=text], input[type=email], input[type=password], input[type=file], select {
+input[type=text], input[type=email], input[type=password], input[type=file], textarea, select {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -203,6 +211,16 @@ input[type=text], input[type=email], input[type=password], input[type=file], sel
     cursor: pointer;
 }
 
+.blockquote {
+    margin-bottom: 30px;
+}
+.blockquote blockquote {
+    border-left: 2px solid #fff;
+    margin: 0;
+    padding: 14px;
+    background-color: rgba(255,255,255,0.5);
+}
+
 hr {
     margin: 30px 0;
     border-color: var(--white-color);
@@ -217,4 +235,19 @@ hr {
 }
 .modale-film-item{
     text-align: center;
+}
+
+@media screen and (min-width: 900px) {
+    .shom-film-area {
+        display: flex;
+    }
+    .shom-film-synopsis {
+        padding: 0 15px;
+        flex-grow: 1;
+    }
+}
+@media screen and (max-width: 900px) {
+    .shom-film-thumb {
+        text-align: center;
+    }
 }

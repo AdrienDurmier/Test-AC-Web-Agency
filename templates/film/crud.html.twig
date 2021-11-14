@@ -20,6 +20,7 @@
                 <th>Image</th>
                 <th>Nom</th>
                 <th>Genre</th>
+                <th>Commentaires</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -29,13 +30,20 @@
                 <td>{{ film.id }}</td>
                 <td><img src="/{{ film.image }}" alt="{{ film.nom }}" style="height:50px;"></td>
                 <td>{{ film.nom }}</td>
-                <td>#{{ film.genre }}</td>
+                <td><a href="{{ path('front.genre.show', {'id': film.genre.id}) }}">#{{ film.genre }}</a></td>
+                <td><a href="{{ path('front.film.show', {'id': film.id}) }}">{{ film.commentaires|length }}</a></td>
                 <td>
-                    <a href="{{ path('admin.film.edit', {'id': film.id}) }}">Modifier</a>
+                    <a href="{{ path('front.film.show', {'id': film.id}) }}">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                    |
+                    <a href="{{ path('admin.film.edit', {'id': film.id}) }}">
+                        <i class="fas fa-edit"></i>
+                    </a>
                     |
                     <form method="post" action="{{ path('admin.film.delete', {'id': film.id}) }}" onsubmit="return confirm('Êtes-vous sûrs?');" style="display:inline;">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ film.id) }}">
-                        <button type="submit" class="button">Supprimer</button>
+                        <button type="submit" class="button"><i class="fas fa-trash"></i></button>
                     </form>
                 </td>
             </tr>

@@ -77,6 +77,12 @@ class FilmFixtures extends Fixture implements DependentFixtureInterface
         $film11->setGenre($this->getReference('genre-drame'));
         $manager->persist($film11);
 
+        $film12 = new Film();
+        $film12->setNom('Interstellar');
+        $film12->setImage('img/158828.jpg');
+        $film12->setGenre($this->getReference('genre-sciencefiction'));
+        $manager->persist($film12);
+
         $manager->flush();
     }
 
